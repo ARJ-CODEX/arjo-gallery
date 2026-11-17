@@ -1,0 +1,19 @@
+{
+  "name": "LensForge — Offline Photo Studio & Private Vault",
+  "short_name": "LensForge",
+  "description": "Pro filter presets, a PIN-locked private vault, and metadata-clean exports. 100% offline.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0A0A0C",
+  "theme_color": "#0A0A0C",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

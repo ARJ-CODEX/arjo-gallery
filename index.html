@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="LensForge — an offline photo studio with pro filter presets, a PIN-locked private vault, and metadata-clean exports. What competitors paywall, here it's free." />
+  <meta name="theme-color" content="#0A0A0C" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LensForge" />
+  <title>LensForge — Offline Photo Studio & Private Vault</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+
+    <!-- ======= Header ======= -->
+    <header class="header">
+      <a class="brand" href="./" aria-label="LensForge home">
+        <span class="brand-icon">📷</span>
+        <span class="brand-name">Lens<span class="brand-accent">Forge</span></span>
+        <span class="brand-sub">Photo Studio</span>
+      </a>
+      <div class="header-actions">
+        <button id="settings-btn" class="icon-btn" title="Settings & vault data" aria-label="Open settings">⚙️</button>
+        <a class="icon-btn" href="https://github.com/ARJ-CODEX/lensforge" target="_blank" rel="noopener" title="View on GitHub" aria-label="View source code on GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- ======= View tabs ======= -->
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab-btn active" data-view="studio" role="tab" aria-selected="true">🎛 Studio</button>
+      <button class="tab-btn" data-view="vault" role="tab" aria-selected="false">🔐 Vault</button>
+      <button class="tab-btn" data-view="exif" role="tab" aria-selected="false">🔍 Privacy</button>
+    </nav>
+
+    <!-- ======= Studio ======= -->
+    <section class="view active" id="view-studio" aria-label="Photo studio">
+      <div class="studio-empty panel" id="studio-empty">
+        <h3 class="panel-title">⚡ Forge your photos — 100% offline</h3>
+        <ol class="steps">
+          <li><b>📂 Open a photo</b> — from your device gallery or files.</li>
+          <li><b>🎨 Pick a preset</b> — 16 pro-grade looks, all free, no watermark.</li>
+          <li><b>⬇ Export</b> — clean file, metadata stripped, your style kept.</li>
+        </ol>
+        <button class="btn btn-primary" id="open-photo-btn">📂 Open a photo</button>
+        <input type="file" id="studio-file" accept="image/*" hidden />
+      </div>
+
+      <div class="studio-workbench" id="studio-workbench" hidden>
+        <div class="panel canvas-panel">
+          <div class="canvas-stage" id="canvas-stage">
+            <canvas id="edit-canvas" aria-label="Photo being edited"></canvas>
+          </div>
+          <div class="stage-bar">
+            <button class="btn btn-ghost btn-tiny" id="compare-btn" title="Hold to see original">👁 Hold to compare</button>
+            <span class="zoom-hint" id="img-dims"></span>
+            <button class="btn btn-ghost btn-tiny" id="replace-photo-btn">📂 Replace</button>
+            <input type="file" id="studio-file-2" accept="image/*" hidden />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-title">🎨 Presets — every pack is free here</h3>
+          <div class="preset-grid" id="preset-grid"></div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-title">🎚 Fine tune</h3>
+          <div class="slider-grid" id="adjust-sliders"></div>
+          <button class="btn btn-ghost btn-tiny" id="reset-adjust-btn">↺ Reset adjustments</button>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-title">🧲 Frame</h3>
+          <div class="form-row">
+            <span class="seg" id="rotate-seg">
+              <button type="button" class="seg-btn" data-rotate="90">⟳ 90°</button>
+              <button type="button" class="seg-btn" data-rotate="180">⟳ 180°</button>
+              <button type="button" class="seg-btn" data-rotate="270">⟳ 270°</button>
+            </span>
+            <span class="seg" id="flip-seg">
+              <button type="button" class="seg-btn" data-flip="h">⇋ Flip H</button>
+              <button type="button" class="seg-btn" data-flip="v">⇵ Flip V</button>
+            </span>
+            <label>Crop
+              <select id="crop-select">
+                <option value="free">Free</option>
+                <option value="1:1">Square 1:1</option>
+                <option value="4:5">Portrait 4:5</option>
+                <option value="16:9">Wide 16:9</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="panel export-panel">
+          <h3 class="panel-title">⬇ Export — no watermark, metadata stripped</h3>
+          <div class="form-row">
+            <label>Format
+              <select id="export-format">
+                <option value="jpeg">JPEG</option>
+                <option value="png">PNG</option>
+              </select>
+            </label>
+            <label id="quality-label">Quality
+              <input type="range" id="export-quality" min="50" max="100" value="92" />
+            </label>
+            <label class="name-label">Filename
+              <input type="text" id="export-name" placeholder="lensforge-photo" maxlength="60" />
+            </label>
+          </div>
+          <div class="editor-actions">
+            <button class="btn btn-primary" id="export-btn">⬇ Export clean photo</button>
+            <button class="btn btn-ghost" id="save-vault-btn">🔐 Copy into Vault</button>
+          </div>
+          <p class="hint-line" id="exif-note"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Vault ======= -->
+    <section class="view" id="view-vault" aria-label="Private vault">
+      <!-- Locked state -->
+      <div class="panel vault-gate" id="vault-gate">
+        <h3 class="panel-title">🔐 Private Vault</h3>
+        <div id="vault-setup" hidden>
+          <p class="hint-line">Choose a PIN (4–8 digits). It never leaves this device — stored as a salted hash.</p>
+          <div class="form-row">
+            <label>PIN
+              <input type="password" id="pin-new" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
+            </label>
+            <label>Repeat
+              <input type="password" id="pin-repeat" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
+            </label>
+          </div>
+          <button class="btn btn-primary" id="pin-create-btn">🔒 Create vault</button>
+        </div>
+        <div id="vault-unlock">
+          <p class="hint-line" id="unlock-hint">Enter your PIN to open the vault.</p>
+          <div class="form-row">
+            <label>PIN
+              <input type="password" id="pin-enter" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" />
+            </label>
+          </div>
+          <button class="btn btn-primary" id="pin-unlock-btn">🔓 Unlock</button>
+        </div>
+        <p class="insight" id="vault-msg"></p>
+      </div>
+
+      <!-- Unlocked state -->
+      <div class="vault-open" id="vault-open" hidden>
+        <div class="panel">
+          <div class="vault-bar">
+            <span class="vault-count" id="vault-count">0 photos</span>
+            <span class="vault-bar-actions">
+              <button class="btn btn-primary btn-small" id="vault-add-btn">➕ Add photos</button>
+              <button class="btn btn-ghost btn-small" id="vault-lock-btn">🔒 Lock</button>
+            </span>
+            <input type="file" id="vault-file" accept="image/*" multiple hidden />
+          </div>
+          <ul class="vault-grid" id="vault-grid"></ul>
+          <p class="list-empty" id="vault-empty">Vault is empty. Add photos — they live only on this device. 🖼</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Privacy / EXIF ======= -->
+    <section class="view" id="view-exif" aria-label="Privacy inspector">
+      <div class="panel">
+        <h3 class="panel-title">🔍 Metadata inspector</h3>
+        <p class="hint-line">Open a photo to see what it secretly carries — GPS location, device model, timestamps…</p>
+        <button class="btn btn-ghost btn-small" id="exif-open-btn">📂 Open a photo to inspect</button>
+        <input type="file" id="exif-file" accept="image/*" hidden />
+        <ul class="insight-list" id="exif-list" hidden></ul>
+        <p class="list-empty" id="exif-clean" hidden>✅ No GPS or device metadata found — this photo is already clean.</p>
+        <div class="vault-bar" id="exif-export-row" hidden>
+          <span class="vault-count">Want to share it?</span>
+          <button class="btn btn-primary btn-small" id="exif-clean-export-btn">⬇ Export stripped copy</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">🛡 How LensForge protects you</h3>
+        <ul class="steps">
+          <li><b>Every export is re-encoded</b> — GPS, device model and timestamps are stripped automatically.</li>
+          <li><b>Vault photos never leave the device</b> — stored in the app's private sandbox.</li>
+          <li><b>The PIN is a salted hash</b> — even we couldn't read it (and there's no server anyway).</li>
+          <li><b>Zero network activity</b> — no analytics, no cloud, no account.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>
+        Forged with 📷 by
+        <a href="https://github.com/ARJ-CODEX" target="_blank" rel="noopener">ARJ-CODEX</a>
+        · Your photos stay on your device ·
+        <a href="https://github.com/ARJ-CODEX/lensforge" target="_blank" rel="noopener">Source code</a>
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- ======= Settings ======= -->
+  <div class="modal-overlay" id="settings-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="modal-header">
+        <h2>⚙️ Settings</h2>
+        <button class="icon-btn" id="settings-close" aria-label="Close settings">✕</button>
+      </div>
+      <div class="settings-grid">
+        <label>Auto-lock vault after (minutes)
+          <input type="number" id="s-autolock" min="1" max="60" />
+        </label>
+        <label>Export quality default (%)
+          <input type="number" id="s-quality" min="50" max="100" />
+        </label>
+      </div>
+      <p class="hint-line">Storage used: <span id="storage-used">…</span> — everything stays in this app's sandbox.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost btn-small" id="settings-cancel">Cancel</button>
+        <button class="btn btn-primary btn-small" id="settings-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Fullscreen vault viewer ======= -->
+  <div class="modal-overlay viewer-overlay" id="viewer-modal" hidden>
+    <button class="icon-btn viewer-close" id="viewer-close" aria-label="Close viewer">✕</button>
+    <img id="viewer-img" alt="Vault photo" />
+    <div class="viewer-actions">
+      <button class="btn btn-ghost btn-small" id="viewer-export-btn">⬇ Export copy</button>
+      <button class="btn btn-ghost btn-small danger" id="viewer-delete-btn">🗑 Delete</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+  <script>
+    // PWA: register the offline service worker (web only — skipped in Electron/file://)
+    if (
+      "serviceWorker" in navigator &&
+      (location.protocol === "https:" ||
+        ["localhost", "127.0.0.1"].includes(location.hostname))
+    ) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

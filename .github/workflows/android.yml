@@ -1,0 +1,91 @@
+name: Android APK
+
+# Builds the LensForge APK in the cloud (GitHub-hosted runner) so no
+# local Android SDK / Gradle is needed. Triggered manually or on version tags.
+# The APK is attached to the GitHub Release automatically (direct-download
+# distribution — no Play Store, per the ARJ Forge mobile policy).
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Fresh web assets straight from the repo root
+      - name: Copy web assets
+        run: |
+          mkdir -p mobile/www
+          cp index.html style.css app.js icon.png manifest.json mobile/www/
+
+      - name: Install Capacitor
+        run: cd mobile && npm ci
+
+      - name: Create Android project
+        run: cd mobile && npx cap add android && npx cap sync
+
+      # Brand the launcher icons with the LF aperture mark
+      - name: Install ImageMagick
+        run: sudo apt-get update -q && sudo apt-get install -y -q imagemagick
+
+      - name: Brand app icons
+        run: |
+          cd mobile
+          SRC=../icon.png
+          RES=android/app/src/main/res
+          for pair in "mipmap-mdpi 48" "mipmap-hdpi 72" "mipmap-xhdpi 96" "mipmap-xxhdpi 144" "mipmap-xxxhdpi 192"; do
+            set -- $pair
+            dir=$1; size=$2
+            [ -d "$RES/$dir" ] || continue
+            if [ -f "$RES/$dir/ic_launcher.png" ]; then
+              convert "$SRC" -resize ${size}x${size} "$RES/$dir/ic_launcher.png"
+            fi
+            if [ -f "$RES/$dir/ic_launcher_round.png" ]; then
+              convert "$SRC" -resize ${size}x${size} "$RES/$dir/ic_launcher_round.png"
+            fi
+            if [ -f "$RES/$dir/ic_launcher_foreground.png" ]; then
+              convert "$SRC" -resize $((size*66/100))x$((size*66/100)) -background none -gravity center -extent ${size}x${size} "$RES/$dir/ic_launcher_foreground.png"
+            fi
+          done
+
+      - name: Build APK
+        run: cd mobile/android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
+
+      - name: Rename APK
+        run: cp mobile/android/app/build/outputs/apk/debug/app-debug.apk LensForge-android.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LensForge-android-apk
+          path: LensForge-android.apk
+
+      - name: Attach APK to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: LensForge-android.apk
+          body: |
+            📷 **LensForge for Android** — direct APK download.
+
+            **Install:** download `LensForge-android.apk` → open it → allow "install unknown apps" for your browser when asked. Done.
+
+            - 100% offline studio: 16 pro presets, watermark-free exports
+            - 🔐 Private vault with PIN — photos never leave the device
+            - 🧹 Every export strips GPS & device metadata
+            - No Play Store, no account, no permissions requested
