@@ -610,7 +610,8 @@ function bindStudioEvents() {
 }
 
 async function buildExportBlob() {
-  const work = transformedCanvas(6000); // full-res export cap
+  // 4096px cap keeps memory sane on low-RAM phones (a 6000px canvas ≈ 140 MB RGBA)
+  const work = transformedCanvas(4096);
   const out = document.createElement("canvas");
   renderTo(out, work, (PRESETS.find((p) => p.id === studio.preset) || PRESETS[0]).fx || {});
   const fmt = $("export-format").value;
@@ -768,11 +769,18 @@ function bindVaultEvents() {
     e.target.value = "";
     if (!files.length) return;
     toast(`Importing ${files.length} photo${files.length > 1 ? "s" : ""}…`);
+    let ok = 0;
     for (const f of files) {
-      await vaultAddBlob(f, f.name.replace(/\.[^.]+$/, ""));
+      try {
+        await vaultAddBlob(f, f.name.replace(/\.[^.]+$/, ""));
+        ok++;
+      } catch (err) {
+        toast(`Couldn't save "${f.name}" — storage may be full. Try smaller photos or free space.`);
+        break;
+      }
     }
     await renderVaultGrid();
-    toast(`${files.length} photo${files.length > 1 ? "s" : ""} sealed in the vault 🔐`);
+    if (ok) toast(`${ok} photo${ok > 1 ? "s" : ""} sealed in the vault 🔐`);
   });
 
   $("vault-lock-btn").addEventListener("click", () => {
