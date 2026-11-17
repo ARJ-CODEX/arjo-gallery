@@ -1,6 +1,6 @@
 {
-  "appId": "io.github.arjcodex.lensforge",
-  "appName": "LensForge",
+  "appId": "io.github.arjcodex.arjogallery",
+  "appName": "ARJO Gallery",
   "webDir": "www",
   "backgroundColor": "#0A0A0C",
   "android": {

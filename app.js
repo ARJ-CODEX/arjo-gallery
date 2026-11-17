@@ -1,4 +1,4 @@
-/* LensForge — offline photo studio & private vault.
+/* ARJO Gallery — offline photo studio & private vault.
    Vanilla JS, zero dependencies, zero network. */
 
 "use strict";
@@ -509,7 +509,7 @@ async function loadStudioFile(file) {
 
     $("studio-empty").hidden = true;
     $("studio-workbench").hidden = false;
-    $("export-name").value = studio.name + "-lensforge";
+    $("export-name").value = studio.name + "-arjogallery";
 
     // EXIF note
     const buf = await file.arrayBuffer();
@@ -617,7 +617,7 @@ async function buildExportBlob() {
   const quality = Number($("export-quality").value) / 100;
   const type = fmt === "png" ? "image/png" : "image/jpeg";
   const blob = await new Promise((res) => out.toBlob(res, type, quality));
-  let name = ($("export-name").value || "lensforge-photo").trim() || "lensforge-photo";
+  let name = ($("export-name").value || "arjogallery-photo").trim() || "arjogallery-photo";
   name = name + (fmt === "png" ? ".png" : ".jpg");
   return { blob, name };
 }
@@ -632,7 +632,7 @@ async function exportPhoto() {
 
 /* ================= vault ================= */
 
-const DB_NAME = "lensforge";
+const DB_NAME = "arjogallery";
 const DB_VERSION = 1;
 
 function openDB() {
@@ -785,7 +785,7 @@ function bindVaultEvents() {
     if (!id) return;
     const rec = await idbGet("photos", id);
     if (!rec) return;
-    download(rec.blob, (rec.name || "vault-photo") + "-lensforge.jpg");
+    download(rec.blob, (rec.name || "vault-photo") + "-arjogallery.jpg");
     toast("Exported clean copy ✅");
   });
   $("viewer-delete-btn").addEventListener("click", async () => {
@@ -804,7 +804,7 @@ function bindVaultEvents() {
   );
   setInterval(async () => {
     if (!vault.unlocked) return;
-    const minutes = Number(localStorage.getItem("lf-autolock") || 5);
+    const minutes = Number(localStorage.getItem("ag-autolock") || 5);
     if (Date.now() - vault.lastActive > minutes * 60 * 1000) {
       lockVault("Vault auto-locked after " + minutes + " min of inactivity 🔒");
     }
@@ -936,8 +936,8 @@ async function showExif(file) {
 
 function bindSettingsEvents() {
   $("settings-btn").addEventListener("click", async () => {
-    $("s-autolock").value = localStorage.getItem("lf-autolock") || 5;
-    $("s-quality").value = localStorage.getItem("lf-quality") || 92;
+    $("s-autolock").value = localStorage.getItem("ag-autolock") || 5;
+    $("s-quality").value = localStorage.getItem("ag-quality") || 92;
     $("export-quality").value = $("s-quality").value;
     try {
       if (navigator.storage?.estimate) {
@@ -956,8 +956,8 @@ function bindSettingsEvents() {
   $("settings-save").addEventListener("click", () => {
     const lock = Math.min(60, Math.max(1, Number($("s-autolock").value) || 5));
     const q = Math.min(100, Math.max(50, Number($("s-quality").value) || 92));
-    localStorage.setItem("lf-autolock", String(lock));
-    localStorage.setItem("lf-quality", String(q));
+    localStorage.setItem("ag-autolock", String(lock));
+    localStorage.setItem("ag-quality", String(q));
     $("export-quality").value = q;
     $("settings-modal").hidden = true;
     toast("Settings saved ✅");
@@ -974,7 +974,7 @@ async function init() {
   bindSettingsEvents();
 
   // restore default export quality
-  $("export-quality").value = localStorage.getItem("lf-quality") || 92;
+  $("export-quality").value = localStorage.getItem("ag-quality") || 92;
 
   // vault state
   const pinRec = await idbGet("kv", "pin").catch(() => null);

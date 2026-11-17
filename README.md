@@ -1,24 +1,24 @@
 <p align="center">
-  <img src="icon.png" width="140" alt="LensForge icon — gold lens aperture with a glossy red LF monogram" />
+  <img src="icon.png" width="140" alt="ARJO Gallery icon — gold lens aperture with a glossy red LF monogram" />
 </p>
 
-# 📷 LensForge
+# 📷 ARJO Gallery
 
 <p align="center">
-  <img src="https://img.shields.io/badge/license-Brand%20Protected-red.svg" alt="License: LensForge Brand License — no rebranding" />
+  <img src="https://img.shields.io/badge/license-Brand%20Protected-red.svg" alt="License: ARJO Gallery Brand License — no rebranding" />
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Zero dependencies" />
   <img src="https://img.shields.io/badge/data-local--first-teal.svg" alt="Local-first" />
   <img src="https://img.shields.io/badge/watermark-none-brightgreen.svg" alt="No watermark" />
   <img src="https://img.shields.io/badge/prs-welcome-orange.svg" alt="PRs welcome" />
 </p>
 
-**LensForge** is an offline photo studio with pro-grade filter presets, a **PIN-locked private vault**, and **metadata-clean exports**. Everything other apps paywall — presets, watermark-free exports, hidden albums, EXIF stripping — is free here. No account, no cloud, no subscription.
+**ARJO Gallery** is an offline photo studio with pro-grade filter presets, a **PIN-locked private vault**, and **metadata-clean exports**. Everything other apps paywall — presets, watermark-free exports, hidden albums, EXIF stripping — is free here. No account, no cloud, no subscription.
 
-**🔗 Web app: [arj-codex.github.io/lensforge](https://arj-codex.github.io/lensforge)**
+**🔗 Web app: [arj-codex.github.io/arjo-gallery](https://arj-codex.github.io/arjo-gallery)**
 
-## Why LensForge?
+## Why ARJO Gallery?
 
-Your photos are **leaking**: EXIF GPS tags betray where you live, editors stamp watermarks on *your* pictures, filter packs sit behind subscriptions, and private albums need a paid "pro" tier. LensForge fixes all of it, offline:
+Your photos are **leaking**: EXIF GPS tags betray where you live, editors stamp watermarks on *your* pictures, filter packs sit behind subscriptions, and private albums need a paid "pro" tier. ARJO Gallery fixes all of it, offline:
 
 - 🎨 **16 pro presets** — Cinema, Noir, Moody, Retro 70s, Neon Night… every pack free, forever
 - 🎚 **Fine tune** — brightness, contrast, saturation, warmth, fade, vignette, film grain
@@ -43,8 +43,8 @@ Your photos are **leaking**: EXIF GPS tags betray where you live, editors stamp 
 No build step, no dependencies:
 
 ```bash
-git clone https://github.com/ARJ-CODEX/lensforge.git
-cd lensforge
+git clone https://github.com/ARJ-CODEX/arjo-gallery.git
+cd arjo-gallery
 # open index.html in your browser, or serve it:
 npx serve .
 ```
@@ -53,11 +53,11 @@ npx serve .
 
 **Direct APK — no Play Store, no account:**
 
-1. Grab **`LensForge-android.apk`** from [**Releases**](https://github.com/ARJ-CODEX/lensforge/releases).
+1. Grab **`ARJO Gallery-android.apk`** from [**Releases**](https://github.com/ARJ-CODEX/arjo-gallery/releases).
 2. Open it on your phone → allow "install unknown apps" for your browser when asked.
-3. The gold LF aperture lands on your home screen. 100% offline, zero permissions.
+3. The gold AG aperture lands on your home screen. 100% offline, zero permissions.
 
-**Or install as a PWA** (no APK): open [the web app](https://arj-codex.github.io/lensforge) in Chrome → **Add to Home screen**.
+**Or install as a PWA** (no APK): open [the web app](https://arj-codex.github.io/arjo-gallery) in Chrome → **Add to Home screen**.
 
 The APK is built entirely in the cloud (GitHub Actions + Capacitor) — push a `v*` tag and the APK attaches to the release automatically.
 
@@ -85,7 +85,7 @@ The APK is built entirely in the cloud (GitHub Actions + Capacitor) — push a `
 ## 📂 Project Structure
 
 ```
-lensforge/
+arjo-gallery/
 ├── index.html      # Markup
 ├── style.css       # ARJ Forge identity (black · red · gold)
 ├── app.js          # Filter engine, presets, vault, EXIF parser
@@ -104,16 +104,16 @@ lensforge/
 
 ## ™ Trademark & Branding
 
-**LensForge™** and its logo are the exclusive brand of **ARJ-CODEX**.
+**ARJO Gallery™** and its logo are the exclusive brand of **ARJ-CODEX**.
 
-You may use the LensForge name only to refer to this original project. You may **not**:
+You may use the ARJO Gallery name only to refer to this original project. You may **not**:
 
 - Rebrand or redistribute this project under any other name
-- Use the LensForge name or logo for your own products, domains, or marketing
-- Present a modified version as an official LensForge release
+- Use the ARJO Gallery name or logo for your own products, domains, or marketing
+- Present a modified version as an official ARJO Gallery release
 
 Personal and internal use is free, and contributions to this repository are welcome — see the [License](LICENSE) for full terms.
 
 ## 📄 License
 
-Released under the **[LensForge Brand License (FBL)](LICENSE)** — free to use, protected against rebranding.
+Released under the **[ARJO Gallery Brand License (FBL)](LICENSE)** — free to use, protected against rebranding.

@@ -1,7 +1,7 @@
 {
-  "name": "LensForge — Offline Photo Studio & Private Vault",
-  "short_name": "LensForge",
-  "description": "Pro filter presets, a PIN-locked private vault, and metadata-clean exports. 100% offline.",
+  "name": "ARJO Gallery — Offline Photo Studio & Private Vault",
+  "short_name": "ARJO Gallery",
+  "description": "Offline photo studio: pro filter presets, a PIN-locked private vault, and metadata-clean exports. 100% offline.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -1,8 +1,8 @@
 {
-  "name": "lensforge-mobile",
+  "name": "arjo-gallery-mobile",
   "private": true,
   "version": "1.0.0",
-  "description": "Capacitor wrapper for LensForge — Android APK build",
+  "description": "Capacitor wrapper for ARJO Gallery — Android APK build",
   "dependencies": {
     "@capacitor/android": "^7.0.0",
     "@capacitor/cli": "^7.0.0",

@@ -1,8 +1,8 @@
-/* LensForge service worker — offline-first for the PWA.
+/* ARJO Gallery service worker — offline-first for the PWA.
    Static shell is cache-first; everything else falls back to the network,
    then to the cached home page. Bump CACHE to ship an update. */
 
-const CACHE = "lensforge-v1";
+const CACHE = "arjogallery-v1";
 const ASSETS = [
   "./",
   "index.html",
